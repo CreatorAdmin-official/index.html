@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrainSpace</title>
+<style>
+:root {
+--bg-color: #f4f7f6;
+--text-color: #333;
+--card-bg: #fff;
+--accent-color: #6378ee;
+--accent-hover: #4f64d9;
+--secondary-text: #59627e;
+--input-border: #ddd;
+--transition-speed: 0.3s;
+}
+body.dark-mode {
+--bg-color: #1a1a1a;
+--text-color: #e0e0e0;
+--card-bg: #2a2a2a;
+--secondary-text: #a0a0a0;
+--input-border: #444;
+}
+body {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+margin: 0;
+padding: 0;
+background-color: var(--bg-color);
+color: var(--text-color);
+transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+header {
+position: sticky;
+top: 0;
+z-index: 100;
+background-color: var(--card-bg);
+box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+padding: 1rem 2rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
+transition: background-color var(--transition-speed);
+}
+.logo-area {
+display: flex;
+align-items: center;
+gap: 1.5rem;
+}
+.logo {
+font-size: 1.4rem;
+font-weight: bold;
+color: var(--accent-color);
+display: flex;
+align-items: center;
+gap: 0.4rem;
+}
+.logo span {
+background-color: var(--accent-color);
+color: white;
+padding: 0.15rem 0.4rem;
+border-radius: 4px;
+font-size: 1.1rem;
+}
+nav {
+display: flex;
+align-items: center;
+}
+nav a {
+text-decoration: none;
+color: var(--text-color);
+margin-left: 1.5rem;
+font-weight: 500;
+transition: color 0.3s, color var(--transition-speed);
+cursor: pointer;
+}
+nav a:hover {
+color: var(--accent-color);
+}
+
+.user-profile-menu {
+display: none;
+align-items: center;
+gap: 0.8rem;
+margin-left: 1rem;
+position: relative;
+}
+.user-avatar {
+width: 36px;
+height: 36px;
+border-radius: 50%;
+background-color: var(--accent-color);
+color: white;
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: bold;
+font-size: 1rem;
+}
+.user-name {
+font-weight: 600;
+font-size: 0.95rem;
+color: var(--text-color);
+}
+.btn-logout {
+background: none;
+border: 1px solid var(--input-border);
+color: var(--secondary-text);
+padding: 0.3rem 0.7rem;
+border-radius: 6px;
+cursor: pointer;
+font-size: 0.85rem;
+transition: all 0.2s;
+margin-left: 0.5rem;
+}
+.btn-logout:hover {
+border-color: #ff4d4d;
+color: #ff4d4d;
+}
+
+.btn-download-app {
+background-color: var(--accent-color);
+color: white;
+border: none;
+padding: 0.4rem 0.9rem;
+border-radius: 8px;
+font-weight: 600;
+cursor: pointer;
+font-size: 0.9rem;
+margin-left: 1rem;
+display: flex;
+align-items: center;
+gap: 0.4rem;
+transition: background-color 0.2s;
+text-decoration: none;
+}
+.btn-download-app:hover {
+background-color: var(--accent-hover);
+}
+
+.theme-toggle {
+background: none;
+border: none;
+font-size: 1.5rem;
+cursor: pointer;
+padding: 0.5rem;
+margin-left: 0.5rem;
+}
+main {
+max-width: 1000px;
+margin: 2rem auto;
+padding: 0 1rem;
+}
+.hero-container {
+background-color: var(--card-bg);
+padding: 2rem;
+border-radius: 15px;
+box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+margin-bottom: 2rem;
+text-align: center;
+transition: background-color var(--transition-speed);
+}
+h1 {
+color: var(--text-color);
+margin-bottom: 0.5rem;
+}
+p {
+color: var(--secondary-text);
+}
+
+.action-bar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background-color: var(--card-bg);
+padding: 1rem 1.5rem;
+border-radius: 12px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+margin-bottom: 2rem;
+gap: 1rem;
+flex-wrap: wrap;
+transition: background-color var(--transition-speed);
+}
+.action-buttons {
+display: flex;
+gap: 0.75rem;
+flex-wrap: wrap;
+}
+.btn-action {
+background-color: var(--bg-color);
+color: var(--text-color);
+border: 1px solid var(--input-border);
+padding: 0.5rem 1rem;
+border-radius: 8px;
+font-weight: 500;
+cursor: pointer;
+transition: background-color 0.2s, border-color 0.2s;
+font-size: 0.9rem;
+}
+.btn-action:hover {
+border-color: var(--accent-color);
+color: var(--accent-color);
+}
+.btn-create-main {
+background-color: var(--accent-color);
+color: white;
+border: none;
+padding: 0.5rem 1.2rem;
+border-radius: 8px;
+font-weight: bold;
+cursor: pointer;
+transition: background-color 0.2s;
+font-size: 0.9rem;
+}
+.btn-create-main:hover {
+background-color: var(--accent-hover);
+}
+.search-box input {
+padding: 0.5rem 1rem;
+border: 1px solid var(--input-border);
+border-radius: 8px;
+background-color: var(--bg-color);
+color: var(--text-color);
+font-size: 0.9rem;
+width: 200px;
+}
+.search-box input:focus {
+border-color: var(--accent-color);
+outline: none;
+}
+
+.lessons-section {
+text-align: left;
+margin-top: 1rem;
+}
+.lessons-section h2 {
+margin-bottom: 1rem;
+color: var(--text-color);
+}
+.lessons-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 1.5rem;
+}
+.lesson-card {
+background-color: var(--card-bg);
+border-radius: 12px;
+padding: 1.5rem;
+box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+transition: transform 0.2s, background-color var(--transition-speed), box-shadow 0.2s;
+cursor: pointer;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+}
+.lesson-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+.lesson-icon {
+font-size: 2.5rem;
+margin-bottom: 0.8rem;
+}
+.lesson-title {
+font-size: 1.1rem;
+font-weight: bold;
+color: var(--text-color);
+margin-bottom: 0.5rem;
+}
+.lesson-desc {
+font-size: 0.9rem;
+color: var(--secondary-text);
+}
+
+.modal {
+display: none;
+position: fixed;
+z-index: 10;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+overflow: auto;
+background-color: rgba(0,0,0,0.5);
+}
+.modal-content {
+background-color: var(--card-bg);
+margin: 10% auto;
+padding: 2rem;
+border-radius: 20px;
+box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+width: 100%;
+max-width: 400px;
+text-align: center;
+position: relative;
+transition: background-color var(--transition-speed);
+}
+.close {
+color: var(--secondary-text);
+position: absolute;
+top: 1rem;
+right: 1.5rem;
+font-size: 1.5rem;
+font-weight: bold;
+cursor: pointer;
+}
+.close:hover {
+color: var(--text-color);
+}
+.form-group {
+text-align: left;
+margin-bottom: 1.2rem;
+position: relative;
+}
+label {
+display: block;
+margin-bottom: 0.4rem;
+color: var(--text-color);
+font-weight: 500;
+}
+input {
+width: 100%;
+padding: 0.75rem;
+border: 1px solid var(--input-border);
+border-radius: 10px;
+box-sizing: border-box;
+background-color: var(--bg-color);
+color: var(--text-color);
+transition: border-color 0.3s, background-color var(--transition-speed), color var(--transition-speed);
+}
+input:focus {
+border-color: var(--accent-color);
+outline: none;
+}
+
+.password-wrapper {
+position: relative;
+}
+.toggle-password {
+position: absolute;
+right: 12px;
+top: 50%;
+transform: translateY(-50%);
+background: none;
+border: none;
+cursor: pointer;
+font-size: 1.2rem;
+color: var(--secondary-text);
+}
+
+button.btn-primary {
+width: 100%;
+padding: 0.75rem;
+background-color: var(--accent-color);
+color: white;
+border: none;
+border-radius: 10px;
+font-weight: bold;
+cursor: pointer;
+transition: background-color 0.3s;
+margin-top: 1rem;
+}
+button.btn-primary:hover {
+background-color: var(--accent-hover);
+}
+.auth-subtext {
+font-size: 0.9rem;
+margin-top: 1.5rem;
+color: var(--secondary-text);
+}
+.auth-subtext a {
+color: var(--accent-color);
+text-decoration: none;
+font-weight: bold;
+cursor: pointer;
+}
+.auth-subtext a:hover {
+color: var(--accent-hover);
+}
+
+.success-checkmark {
+width: 80px;
+height: 80px;
+margin: 0 auto 1rem auto;
+}
+.check-icon {
+width: 80px;
+height: 80px;
+position: relative;
+border-radius: 50%;
+background-color: #009900;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.check-icon .icon-line {
+height: 7px;
+background-color: #ffffff;
+display: block;
+position: absolute;
+border-radius: 4px;
+}
+.icon-line.line-tip {
+top: 44px;
+left: 20px;
+width: 22px;
+transform: rotate(45deg);
+}
+.icon-line.line-long {
+top: 36px;
+left: 32px;
+width: 35px;
+transform: rotate(-45deg);
+}
+
+.version-footer {
+position: fixed;
+bottom: 15px;
+left: 50%;
+transform: translateX(-50%);
+color: var(--secondary-text);
+font-size: 0.8rem;
+opacity: 0.6;
+pointer-events: none;
+}
+
+@media (max-width: 768px) {
+.lessons-grid {
+grid-template-columns: 1fr;
+}
+.action-bar {
+flex-direction: column;
+align-items: stretch;
+}
+.search-box input {
+width: 100%;
+}
+}
+</style>
+</head>
+<body>
+<header>
+<div class="logo-area">
+<div class="logo"><span>BS</span> BrainSpace</div>
+</div>
+<nav>
+<div id="guestNav" style="display: flex; align-items: center;">
+<a onclick="openLoginModal()">Войти</a>
+<a onclick="openRegistrModal()">Зарегистрироваться</a>
+</div>
+
+<div id="userNav" class="user-profile-menu">
+<div class="user-avatar" id="userAvatar">U</div>
+<span class="user-name" id="userName">Пользователь</span>
+<button class="btn-logout" onclick="logoutUser()">Выйти</button>
+</div>
+
+<button class="btn-download-app" onclick="downloadAppInfo()">📥 Скачать</button>
+
+<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">☀️</button>
+</nav>
+</header>
+
+<main>
+<div class="hero-container">
+<h1>Добро пожаловать в BrainSpace</h1>
+<p>Интерактивная платформа для вашего удобства.</p>
+</div>
+
+<div class="action-bar">
+<div class="action-buttons">
+<button class="btn-create-main" onclick="openMessageModal('Создать занятие', 'Панель создания нового интерактивного урока.')">+ Создать занятие</button>
+<button class="btn-action" onclick="openMessageModal('Новая папка', 'Создание новой папки для организации уроков.')">📁 Новая папка</button>
+<button class="btn-action" onclick="openMessageModal('Корзина', 'Здесь находятся удаленные уроки.')">🗑️ Корзина</button>
+</div>
+<div class="search-box">
+<input type="text" placeholder="Поиск занятий...">
+</div>
+</div>
+
+<div class="lessons-section">
+<h2>Интерактивные уроки</h2>
+<div class="lessons-grid">
+<div class="lesson-card" onclick="openMessageModal('Урок: Таблица умножения', 'Интерактивная тренировка таблицы умножения в игровой форме.')">
+<div>
+<div class="lesson-icon">📐</div>
+<div class="lesson-title">Таблица умножения</div>
+<div class="lesson-desc">Быстрая проверка знаний на скорость.</div>
+</div>
+</div>
+
+<div class="lesson-card" onclick="openMessageModal('Урок: Словарные слова', 'Интерактивные карточки для запоминания правил русского языка.')">
+<div>
+<div class="lesson-icon">📚</div>
+<div class="lesson-title">Словарные слова</div>
+<div class="lesson-desc">Учим правописание без скуки.</div>
+</div>
+</div>
+
+<div class="lesson-card" onclick="openMessageModal('Урок: Планеты Солнечной системы', 'Увлекательная викторина про космос и астрономию.')">
+<div>
+<div class="lesson-icon">🪐</div>
+<div class="lesson-title">Солнечная система</div>
+<div class="lesson-desc">Исследуйте планеты нашей галактики.</div>
+</div>
+</div>
+
+<div class="lesson-card" onclick="openMessageModal('Урок: Английские времена', 'Практические задания на грамматику английского языка.')">
+<div>
+<div class="lesson-icon">🇬🇧</div>
+<div class="lesson-title">Английские времена</div>
+<div class="lesson-desc">Разбор основных конструкций и тесты.</div>
+</div>
+</div>
+
+<div class="lesson-card" onclick="openMessageModal('Урок: Исторические даты', 'Хронологические пазлы и события мировой истории.')">
+<div>
+<div class="lesson-icon">⏳</div>
+<div class="lesson-title">Исторические даты</div>
+<div class="lesson-desc">Расставьте события в правильном порядке.</div>
+</div>
+</div>
+
+<div class="lesson-card" onclick="openMessageModal('Урок: Занимательная логика', 'Логические задачи и головоломки для развития мышления.')">
+<div>
+<div class="lesson-icon">💡</div>
+<div class="lesson-title">Занимательная логика</div>
+<div class="lesson-desc">Тренируем внимание и смекалку.</div>
+</div>
+</div>
+
+<div class="lesson-card" onclick="openMessageModal('Урок: Математика', 'Примеры, задачи и устный счёт для тренировки ума.')">
+<div>
+<div class="lesson-icon">🔢</div>
+<div class="lesson-title">Математика</div>
+<div class="lesson-desc">Развиваем навык быстрого счёта.</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<div id="regModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeRegistrModal()">×</span>
+<div>
+<h1>Создать аккаунт</h1>
+<p>Присоединяйтесь к нам!</p>
+<form onsubmit="event.preventDefault(); registerUser();">
+<div class="form-group">
+<label for="reg-email">Почта</label>
+<input type="email" id="reg-email" placeholder="example@mail.ru" required>
+</div>
+<div class="form-group">
+<label for="reg-username">Никнейм</label>
+<input type="text" id="reg-username" placeholder="Ваше имя" required>
+</div>
+<div class="form-group">
+<label for="reg-password">Пароль</label>
+<div class="password-wrapper">
+<input type="password" id="reg-password" placeholder="••••••••" required>
+<button type="button" class="toggle-password" onclick="togglePasswordVisibility('reg-password', this)">👁️</button>
+</div>
+</div>
+<div class="form-group">
+<label for="reg-confirm-password">Повторить пароль</label>
+<div class="password-wrapper">
+<input type="password" id="reg-confirm-password" placeholder="••••••••" required>
+<button type="button" class="toggle-password" onclick="togglePasswordVisibility('reg-confirm-password', this)">👁️</button>
+</div>
+</div>
+<button type="submit" class="btn-primary">Зарегистрироваться</button>
+</form>
+</div>
+</div>
+</div>
+
+<div id="loginModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeLoginModal()">×</span>
+<h1>Вход</h1>
+<p>С возвращением!</p>
+<form onsubmit="event.preventDefault(); loginUser();">
+<div class="form-group">
+<label for="login-email">Почта</label>
+<input type="email" id="login-email" placeholder="example@mail.ru" required>
+</div>
+<div class="form-group">
+<label for="login-password">Пароль</label>
+<div class="password-wrapper">
+<input type="password" id="login-password" placeholder="••••••••" required>
+<button type="button" class="toggle-password" onclick="togglePasswordVisibility('login-password', this)">👁️</button>
+</div>
+</div>
+<button type="submit" class="btn-primary">Войти</button>
+</form>
+<p class="auth-subtext">Впервые используете наш BrainSpace? <a onclick="switchToRegister()">Создайте бесплатный аккаунт прямо сейчас.</a></p>
+</div>
+</div>
+
+<div id="messageModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeMessageModal()">×</span>
+<div class="success-checkmark">
+<div class="check-icon">
+<span class="icon-line line-tip"></span>
+<span class="icon-line line-long"></span>
+</div>
+</div>
+<h2 id="modalTitle">Успешно!</h2>
+<p id="modalText" style="margin-top: 10px;"></p>
+<button class="btn-primary" onclick="closeMessageModal()" style="margin-top: 20px;">ОК</button>
+</div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const savedUser = localStorage.getItem("brainspace_user");
+    if (savedUser) {
+        showAuthorizedUI(savedUser);
+    }
+});
+
+function openRegistrModal() {
+document.getElementById("regModal").style.display = "block";
+}
+function closeRegistrModal() {
+document.getElementById("regModal").style.display = "none";
+}
+function openLoginModal() {
+document.getElementById("loginModal").style.display = "block";
+}
+function closeLoginModal() {
+document.getElementById("loginModal").style.display = "none";
+}
+function switchToRegister() {
+closeLoginModal();
+openRegistrModal();
+}
+
+function openMessageModal(title, text) {
+document.getElementById("modalTitle").textContent = title;
+document.getElementById("modalText").textContent = text;
+document.getElementById("messageModal").style.display = "block";
+}
+function closeMessageModal() {
+document.getElementById("messageModal").style.display = "none";
+}
+
+function downloadAppInfo() {
+    openMessageModal("Скачать BrainSpace", "Здесь будет ссылка на скачивание вашего APK-файла или установка веб-приложения на телефон!");
+}
+
+window.onclick = function(event) {
+if (event.target == document.getElementById("regModal")) {
+closeRegistrModal();
+}
+if (event.target == document.getElementById("loginModal")) {
+closeLoginModal();
+}
+if (event.target == document.getElementById("messageModal")) {
+closeMessageModal();
+}
+}
+
+function togglePasswordVisibility(fieldId, btn) {
+const inputField = document.getElementById(fieldId);
+if (inputField.type === "password") {
+inputField.type = "text";
+btn.textContent = "🔒";
+} else {
+inputField.type = "password";
+btn.textContent = "👁️";
+}
+}
+
+function showAuthorizedUI(username) {
+const guestNav = document.getElementById("guestNav");
+const userNav = document.getElementById("userNav");
+const userName = document.getElementById("userName");
+const userAvatar = document.getElementById("userAvatar");
+
+guestNav.style.display = "none";
+userNav.style.display = "flex";
+userName.textContent = username;
+userAvatar.textContent = username.charAt(0).toUpperCase();
+}
+
+function setAuthorizedUser(username) {
+localStorage.setItem("brainspace_user", username);
+showAuthorizedUI(username);
+}
+
+function registerUser() {
+const username = document.getElementById("reg-username").value;
+const password = document.getElementById("reg-password").value;
+const confirmPassword = document.getElementById("reg-confirm-password").value;
+
+if (password !== confirmPassword) {
+openMessageModal("Ошибка", "Пароли не совпадают!");
+return;
+}
+closeRegistrModal();
+setAuthorizedUser(username || "Пользователь");
+openMessageModal("Регистрация успешна!", "Добро пожаловать в BrainSpace, " + username + "!");
+}
+
+function loginUser() {
+const email = document.getElementById("login-email").value;
+const nameFromEmail = email.split('@')[0];
+closeLoginModal();
+setAuthorizedUser(nameFromEmail);
+openMessageModal("Вход выполнен", "С возвращением, " + nameFromEmail + "!");
+}
+
+function logoutUser() {
+localStorage.removeItem("brainspace_user");
+document.getElementById("guestNav").style.display = "flex";
+document.getElementById("userNav").style.display = "none";
+openMessageModal("Выход выполнен", "Вы успешно вышли из системы.");
+}
+
+function toggleTheme() {
+const body = document.body;
+const themeToggle = document.getElementById("themeToggle");
+body.classList.toggle("dark-mode");
+if (body.classList.contains("dark-mode")) {
+themeToggle.textContent = "🌙";
+} else {
+themeToggle.textContent = "☀️";
+}
+}
+</script>
+
+<div class="version-footer">v.1.0.4</div>
+</body>
+</html>
